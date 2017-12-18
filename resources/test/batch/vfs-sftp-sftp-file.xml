@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:batch="http://www.springframework.org/schema/batch"
+	xmlns:task="http://www.springframework.org/schema/task" xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:jms="http://www.springframework.org/schema/jms" xmlns:int-jms="http://www.springframework.org/schema/integration/jms"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:file="http://www.springframework.org/schema/integration/file"
+	xsi:schemaLocation="http://www.springframework.org/schema/batch
+     http://www.springframework.org/schema/batch/spring-batch.xsd
+     http://www.springframework.org/schema/aop
+     http://www.springframework.org/schema/aop/spring-aop.xsd
+     http://www.springframework.org/schema/context
+     http://www.springframework.org/schema/context/spring-context.xsd
+     http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans.xsd
+     http://www.springframework.org/schema/task
+     http://www.springframework.org/schema/task/spring-task.xsd
+     http://www.springframework.org/schema/util
+     http://www.springframework.org/schema/util/spring-util.xsd
+     http://www.springframework.org/schema/integration
+     http://www.springframework.org/schema/integration/spring-integration.xsd">
+
+
+	<batch:job id="sftp-sftp-test-batch" job-repository="smartBatchRepository">
+		<batch:step id="step1">
+			<batch:tasklet ref="sftp-sftp-test-adapter">
+				<batch:listeners>
+					<batch:listener ref="batchAuditEventEmitter" />
+					<batch:listener ref="batchLifeCycleListener" />
+				</batch:listeners>
+			</batch:tasklet>
+		</batch:step>
+
+		<batch:listeners>
+			<batch:listener ref="batchAuditEventEmitter" />
+			<batch:listener ref="batchLifeCycleListener" />
+		</batch:listeners>
+	</batch:job>
+	<bean id="sftp-sftp-test-adapter" class="com.mcg.batch.runtime.impl.tasklet.VFSTasklet">
+		<property name="adapter" ref="sftp-sftp-adapter" />
+		<property name="batchFileParameters">
+			<map>
+				<entry key="fileName" value="(.*)xml" />
+				<entry key="maxFileCount" value="10" />
+				<entry key="maxFileSize" value="10240" />
+				<entry key="sortOrder" value="DESCENDING" />
+				<entry key="sortBy" value="SIZE" />
+			</map>
+		</property>
+		<property name="operation">
+			<value type="com.mcg.batch.utils.FileOperation">COPY</value>
+		</property>
+	</bean>
+
+	<bean id="sftp-sftp-adapter" class="com.mcg.batch.adapter.impl.VFSAdapter">
+		<property name="resource">
+			<list>
+				<ref bean="sftp-sftp-src-resource" />
+				<ref bean="sftp-sftp-tgt-resource" />
+			</list>
+		</property>
+
+	</bean>
+
+	<bean id="sftp-sftp-batch-parameters"
+		class="com.mcg.batch.adapters.impl.support.vfs.BatchVFSParameters">
+		<property name="parameters">
+			<map>
+				<entry key="fileName" value="(.*)xml" />
+				<entry key="maxFileCount" value="10" />
+				<entry key="maxFileSize" value="10240" />
+				<entry key="sortOrder" value="DESCENDING" />
+				<entry key="sortBy" value="SIZE" />
+			</map>
+		</property>
+	</bean>
+
+</beans>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:batch="http://www.springframework.org/schema/batch"
+	xmlns:task="http://www.springframework.org/schema/task" xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:jms="http://www.springframework.org/schema/jms" xmlns:int-jms="http://www.springframework.org/schema/integration/jms"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:file="http://www.springframework.org/schema/integration/file"
+	xsi:schemaLocation="http://www.springframework.org/schema/batch
+     http://www.springframework.org/schema/batch/spring-batch.xsd
+     http://www.springframework.org/schema/aop
+     http://www.springframework.org/schema/aop/spring-aop.xsd
+     http://www.springframework.org/schema/context
+     http://www.springframework.org/schema/context/spring-context.xsd
+     http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans.xsd
+     http://www.springframework.org/schema/task
+     http://www.springframework.org/schema/task/spring-task.xsd
+     http://www.springframework.org/schema/util
+     http://www.springframework.org/schema/util/spring-util.xsd
+     http://www.springframework.org/schema/integration
+     http://www.springframework.org/schema/integration/spring-integration.xsd">
+
+
+	<batch:job id="fm.archive.audit.00001" job-repository="smartBatchRepository">
+		<batch:step id="step1">
+			<batch:tasklet ref="archival-tasklet">
+				<batch:listeners>
+					<batch:listener ref="batchAuditEventEmitter" />
+					<batch:listener ref="batchLifeCycleListener" />
+				</batch:listeners>
+			</batch:tasklet>
+		</batch:step>
+
+		<batch:listeners>
+			<batch:listener ref="batchAuditEventEmitter" />
+			<batch:listener ref="batchLifeCycleListener" />
+		</batch:listeners>
+	</batch:job>
+	<bean id="archival-tasklet"
+		class="com.mcg.batch.runtime.impl.tasklet.AuditArchiverTasklet"
+		scope="step">
+		<property name="sourceDsName" value="JDBC.audit_archive_source" />
+		<property name="targetDsName" value="JDBC.audit_archive_target" />
+		<property name="retainDays"
+			value="#{jobParameters[retaindays] != null ? jobParameters[retaindays] : &quot;30&quot;}" />
+		<property name="tables"
+			value="#{jobParameters[tablelist] != null ? jobParameters[tablelist] : &quot;BATCH_AUDIT_EVENT,BATCH_EXCEPTION_EVENT,BATCH_SCHEDULE_EXCEPTION,BATCH_SCHEDULE_AUDIT&quot;}" />
+		<property name="commitInterval"
+			value="#{jobParameters[commitInterval] != null ? jobParameters[commitInterval] : &quot;1000&quot;}" />
+	</bean>
+</beans>

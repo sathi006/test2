@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:bean="http://www.springframework.org/schema/beans" xmlns:file="http://www.springframework.org/schema/integration/file"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:int-jms="http://www.springframework.org/schema/integration/jms"
+	xmlns:jms="http://www.springframework.org/schema/jms" xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:task="http://www.springframework.org/schema/task" xmlns:batch="http://www.springframework.org/schema/batch"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/batch      http://www.springframework.org/schema/batch/spring-batch.xsd      http://www.springframework.org/schema/aop      http://www.springframework.org/schema/aop/spring-aop.xsd      http://www.springframework.org/schema/context      http://www.springframework.org/schema/context/spring-context.xsd      http://www.springframework.org/schema/beans      http://www.springframework.org/schema/beans/spring-beans.xsd      http://www.springframework.org/schema/task      http://www.springframework.org/schema/task/spring-task.xsd      http://www.springframework.org/schema/util      http://www.springframework.org/schema/util/spring-util.xsd      http://www.springframework.org/schema/integration      http://www.springframework.org/schema/integration/spring-integration.xsd">
+	<bean id="adapter-reference-1-1" class="com.mcg.batch.runtime.impl.tasklet.VFSTasklet">
+		<property name="adapter">
+			<bean class="com.mcg.batch.adapter.impl.VFSAdapter">
+				<property name="resource">
+					<list>
+						<ref bean="ftp.location-A" />
+						<ref bean="sftp.location-b" />
+					</list>
+				</property>
+			</bean>
+		</property>
+		<property name="batchFileParameters">
+			<map>
+				<entry key="fileName" value="(*).xml" />
+				<entry key="sortOrder" value="ASCENDING" />
+				<entry key="sftp.compression" value="ZLIB" />
+			</map>
+		</property>
+		<property name="operation">
+			<value type="com.mcg.batch.utils.FileOperation">MOVE</value>
+		</property>
+	</bean>
+	<batch:job job-repository="smartBatchRepository" id="fm.BF01.IN.appA.K18219">
+		<batch:step id="step-1">
+			<batch:tasklet ref="adapter-reference-1-1">
+				<batch:listeners>
+					<batch:listener ref="batchAuditEventEmitter" />
+					<batch:listener ref="batchLifeCycleListener" />
+				</batch:listeners>
+			</batch:tasklet>
+		</batch:step>
+		<batch:listeners>
+			<batch:listener ref="batchAuditEventEmitter" />
+			<batch:listener ref="batchLifeCycleListener" />
+		</batch:listeners>
+	</batch:job>
+</beans>

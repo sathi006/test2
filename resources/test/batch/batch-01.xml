@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:jms="http://www.springframework.org/schema/jms"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:task="http://www.springframework.org/schema/task" xmlns:file="http://www.springframework.org/schema/integration/file"
+	xmlns:batch="http://www.springframework.org/schema/batch" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:bean="http://www.springframework.org/schema/beans" xmlns:int-jms="http://www.springframework.org/schema/integration/jms"
+	xsi:schemaLocation="http://www.springframework.org/schema/batch      http://www.springframework.org/schema/batch/spring-batch.xsd      http://www.springframework.org/schema/aop      http://www.springframework.org/schema/aop/spring-aop.xsd      http://www.springframework.org/schema/context      http://www.springframework.org/schema/context/spring-context.xsd      http://www.springframework.org/schema/beans      http://www.springframework.org/schema/beans/spring-beans.xsd      http://www.springframework.org/schema/task      http://www.springframework.org/schema/task/spring-task.xsd      http://www.springframework.org/schema/util      http://www.springframework.org/schema/util/spring-util.xsd      http://www.springframework.org/schema/integration      http://www.springframework.org/schema/integration/spring-integration.xsd">
+	<bean class="com.mcg.batch.runtime.impl.tasklet.RsyncTasklet"
+		id="tasklet-reference-1-1">
+		<property name="rsyncAdapter">
+			<bean class="com.mcg.batch.adapter.impl.RsyncAdapter">
+				<property name="resource">
+					<list>
+						<ref bean="rsync.Test" />
+						<ref bean="rsync.test1" />
+					</list>
+				</property>
+				<property name="retryerId" value="rsync.Test-retryer" />
+			</bean>
+		</property>
+		<property name="batchRSyncParameters">
+			<bean
+				class="com.mcg.batch.adapters.impl.support.rsync.BatchRsyncParameters">
+				<property name="parameters">
+					<map>
+						<entry key="rsync.transfer.file.name"
+							value="#{jobParameters[source-1-file-name] != null ? jobParameters[source-1-file-name] : *.dat}" />
+						<entry key="rsync.transfer.type" value="COPY" />
+					</map>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<batch:job job-repository="smartBatchRepository" id="fm.test.test.test.J72026">
+		<batch:step id="step-1">
+			<batch:tasklet ref="tasklet-reference-1-1">
+				<batch:listeners>
+					<batch:listener ref="batchAuditEventEmitter" />
+					<batch:listener ref="batchLifeCycleListener" />
+				</batch:listeners>
+			</batch:tasklet>
+		</batch:step>
+		<batch:listeners>
+			<batch:listener ref="batchAuditEventEmitter" />
+			<batch:listener ref="batchLifeCycleListener" />
+		</batch:listeners>
+	</batch:job>
+</beans>

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.1.8" icons="true" automaticImage="PNG" always-add-relationships="false" generalizations="true" 
+  realizations="true" associations="true" dependencies="false" nesting-relationships="true">  
+  <package id="1" language="java" name="com.mcg.batch.core" project="smart-batch-framework" 
+    file="/smart-batch-framework/src/com/scb/smartbatch/core" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="50" width="171" x="43" y="7"/>    
+    <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <class id="2" language="java" name="com.mcg.batch.core.BatchExplorer" project="smart-batch-framework" 
+    file="/smart-batch-framework/src/com/scb/smartbatch/core/BatchExplorer.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="297" width="284" x="877" y="1136"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="3" language="java" name="com.mcg.batch.core.BatchParameterIncrementer" project="smart-batch-framework" 
+    file="/smart-batch-framework/src/com/scb/smartbatch/core/BatchParameterIncrementer.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="117" width="218" x="77" y="-497"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="4" language="java" name="com.mcg.batch.core.BatchWiringConstants" project="smart-batch-framework" 
+    file="/smart-batch-framework/src/com/scb/smartbatch/core/BatchWiringConstants.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="549" width="330" x="335" y="-497"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="5" language="java" name="com.mcg.batch.core.BatchOperator" project="smart-batch-framework" 
+    file="/smart-batch-framework/src/com/scb/smartbatch/core/BatchOperator.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="405" width="281" x="1039" y="-497"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="6" language="java" name="com.mcg.batch.core.RegistryRepositoryConstants" 
+    project="smart-batch-framework" 
+    file="/smart-batch-framework/src/com/scb/smartbatch/core/RegistryRepositoryConstants.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="207" width="294" x="705" y="-497"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="7" language="java" name="com.mcg.batch.core.BatchConfiguration" project="smart-batch-framework" 
+    file="/smart-batch-framework/src/com/scb/smartbatch/core/BatchConfiguration.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="1593" width="374" x="1360" y="-497"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="8" language="java" name="com.mcg.batch.core.BatchLauncher" project="smart-batch-framework" 
+    file="/smart-batch-framework/src/com/scb/smartbatch/core/BatchLauncher.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="153" width="209" x="1201" y="1136"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="9" language="java" name="com.mcg.batch.core.ContextFactory.ContextFactoryInner" 
+    project="smart-batch-framework" file="/smart-batch-framework/src/com/scb/smartbatch/core/ContextFactory.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="2268" y="-185"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="10" language="java" name="com.mcg.batch.core.ContextFactory" project="smart-batch-framework" 
+    file="/smart-batch-framework/src/com/scb/smartbatch/core/ContextFactory.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="225" width="392" x="2072" y="-497"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="11" language="java" name="com.mcg.batch.core.SmartBatchRegistry" project="smart-batch-framework" 
+    file="/smart-batch-framework/src/com/scb/smartbatch/core/SmartBatchRegistry.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="297" width="258" x="1774" y="-497"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <association id="12">    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="13" name="jobLauncher"/>      
+      <multiplicity id="14" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="8" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <nesting id="15">    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="9"/>  
+  </nesting>  
+  <association id="16">    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="17" name="jobExplorer"/>      
+      <multiplicity id="18" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="2" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="19">    
+    <end type="SOURCE" refId="9" navigable="false">      
+      <attribute id="20" name="INSTANCE"/>      
+      <multiplicity id="21" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="10" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    sort-features="false" accessors="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true" static="true"/>    
+    <operations public="true" package="true" protected="true" private="true" static="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>

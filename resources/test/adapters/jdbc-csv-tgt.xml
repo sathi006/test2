@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xsi:schemaLocation="http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-2.1.xsd     http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd"
+	xmlns="http://www.springframework.org/schema/beans" xmlns:batch="http://www.springframework.org/schema/batch"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+	<bean id="jdbc-csv-tgt" class="org.springframework.batch.item.file.FlatFileItemWriter" scope="prototype">
+		<property name="resource" value="file:C:/tmp/csv-local/report_frm_db.csv" />
+		<property name="lineAggregator">
+			<!-- An Aggregator which converts an object into delimited list of strings -->
+			<bean
+				class="org.springframework.batch.item.file.transform.DelimitedLineAggregator">
+
+				<property name="delimiter" value="," />
+
+				<property name="fieldExtractor">
+
+					<!-- Extractor which returns the value of beans property through reflection -->
+					<bean
+						class="org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor">
+						<property name="names" value="epoch,impressions,clicks,earning" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+</beans>

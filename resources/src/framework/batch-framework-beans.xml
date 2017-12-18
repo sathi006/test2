@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:batch="http://www.springframework.org/schema/batch"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-2.1.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+	<bean
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+
+		<property name="location">
+			<value>E:\WorkspaceEclipseUsed\smart-batch-framework\resources\src\framework\scb-smart-batch.properties
+			</value>
+		</property>
+	</bean>
+	<context:component-scan base-package="com.mcg.batch" />
+
+	<bean id="batchMetadataStore"
+		class="com.mcg.batch.store.impl.redis.SmartBatchRedisMetaStore" />
+
+	<bean id="batchRuntimeStore"
+		class="com.mcg.batch.store.impl.redis.SmartBatchRedisRuntimeStore" />
+	<bean id="transactionManager"
+		class="org.springframework.batch.support.transaction.ResourcelessTransactionManager" />
+
+	<bean id="batchIncrementer" class="com.mcg.batch.core.BatchParameterIncrementer" />
+
+
+
+	<bean id="framework-default-retryer" class="com.mcg.batch.adapter.Retryer"
+		scope="prototype">
+		<property name="retryLimit" value="${audit.logger.resource.retry.limit}" />
+		<property name="retryInterval" value="${audit.logger.resource.retry.interval}" />
+	</bean>
+
+	<bean id="auditLoggerJmsAdapter" class="com.mcg.batch.adapter.impl.JMSAdapter">
+		<property name="resource">
+			<bean class="org.springframework.jms.core.JmsTemplate">
+				<property name="connectionFactory">
+					<bean class="org.springframework.jms.connection.CachingConnectionFactory">
+						<constructor-arg>
+							<bean class="org.springframework.jndi.JndiObjectFactoryBean">
+								<property name="jndiTemplate">
+									<bean class="org.springframework.jndi.JndiTemplate"
+										lazy-init="true">
+										<property name="environment">
+											<props>
+												<prop key="java.naming.provider.url">${jms.audit.naming.provider.url}</prop>
+												<prop key="java.naming.factory.initial">${jms.audit.naming.factory.initial}</prop>
+												<!-- <prop key="java.naming.security.principal">#{T(com.mcg.batch.runtime.impl.batch.utils.EncryptedPropertyAccessor).decryptProperty(&quot;jms.audit.naming.provider.security.principal&quot;)}
+												</prop>
+												<prop key="java.naming.security.credentials">#{T(com.mcg.batch.runtime.impl.batch.utils.EncryptedPropertyAccessor).decryptProperty(&quot;jms.audit.naming.provider.security.credentials&quot;)}
+												</prop> -->
+												<prop key="java.naming.provider.url.failoverList">${jms.audit.naming.provider.failover.url.list}</prop>
+												<prop key="com.webmethods.jms.naming.clientgroup">${jms.audit.naming.clientgroup}</prop>
+											</props>
+										</property>
+									</bean>
+								</property>
+								<property name="jndiName"
+									value="${jms.audit.connectionfactory.jndi.name}" />
+								<property name="lookupOnStartup" value="true" />
+								<property name="cache" value="true" />
+								<property name="proxyInterface" value="javax.jms.ConnectionFactory" />
+							</bean>
+						</constructor-arg>
+					</bean>
+				</property>
+				<property name="destinationResolver">
+					<bean
+						class="org.springframework.jms.support.destination.JndiDestinationResolver">
+						<property name="jndiEnvironment">
+							<props>
+								<prop key="java.naming.provider.url">${jms.audit.naming.provider.url}</prop>
+								<prop key="java.naming.factory.initial">${jms.audit.naming.factory.initial}</prop>
+								<!-- <prop key="java.naming.security.principal">#{T(com.mcg.batch.runtime.impl.batch.utils.EncryptedPropertyAccessor).decryptProperty(&quot;jms.audit.naming.provider.security.principal&quot;)}
+								</prop>
+								<prop key="java.naming.security.credentials">#{T(com.mcg.batch.runtime.impl.batch.utils.EncryptedPropertyAccessor).decryptProperty(&quot;jms.audit.naming.provider.security.credentials&quot;)}
+								</prop> -->
+								<prop key="java.naming.provider.url.failoverList">${jms.audit.naming.provider.failover.url.list}</prop>
+								<prop key="com.webmethods.jms.naming.clientgroup">${jms.audit.naming.clientgroup}</prop>
+							</props>
+						</property>
+					</bean>
+				</property>
+				<property name="sessionTransacted" value="true" />
+			</bean>
+
+		</property>
+		<property name="retryerId" value="framework-default-retryer" />
+	</bean>
+
+
+
+</beans>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:batch="http://www.springframework.org/schema/batch"
+	xmlns:task="http://www.springframework.org/schema/task" xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:jms="http://www.springframework.org/schema/jms" xmlns:int-jms="http://www.springframework.org/schema/integration/jms"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:file="http://www.springframework.org/schema/integration/file"
+	xsi:schemaLocation="http://www.springframework.org/schema/batch
+     http://www.springframework.org/schema/batch/spring-batch.xsd
+     http://www.springframework.org/schema/aop
+     http://www.springframework.org/schema/aop/spring-aop.xsd
+     http://www.springframework.org/schema/context
+     http://www.springframework.org/schema/context/spring-context.xsd
+     http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans.xsd
+     http://www.springframework.org/schema/task
+     http://www.springframework.org/schema/task/spring-task.xsd
+     http://www.springframework.org/schema/util
+     http://www.springframework.org/schema/util/spring-util.xsd
+     http://www.springframework.org/schema/integration
+     http://www.springframework.org/schema/integration/spring-integration.xsd">
+
+
+	<bean id="db-reader"
+		class="com.mcg.batch.runtime.impl.item.readers.JdbcItemReader"
+		scope="step">
+		<property name="adapter">
+			<bean class="com.mcg.batch.adapter.impl.JdbcAdapter">
+				<property name="reader">
+					<bean
+						class="org.springframework.batch.item.database.JdbcCursorItemReader">
+						<property name="dataSource" ref="jdbc-csv-ds" />
+						<property name="sql"
+							value="SELECT EPOCH,IMPRESSIONS,CLICKS,EARNING FROM RAW_REPORT" />
+						<property name="rowMapper">
+							<bean class="com.mcg.batch.test.beans.ReportRowMapper" />
+						</property>
+					</bean>
+				</property>
+				<property name="retryerId" value="jdbc-csv-ds-retryer" />
+			</bean>
+		</property>
+	</bean>
+	
+	<bean id="item-tranformer" class="com.mcg.batch.runtime.impl.item.processors.MethodItemProcessor">
+		<property name="transformerClass" value="com.mcg.batch.test.processors.ReportProcessor"/>
+		<property name="methodName" value="transform"/>
+	</bean>
+
+	<batch:job id="db-csv" job-repository="smartBatchRepository">
+		<batch:step id="step1">
+			<batch:tasklet>
+				<batch:chunk reader="db-reader" writer="jdbc-csv-tgt" processor="item-tranformer"
+					commit-interval="100">
+				</batch:chunk>
+				<batch:listeners>
+					<batch:listener ref="batchAuditEventEmitter" />
+					<batch:listener ref="batchLifeCycleListener" />
+				</batch:listeners>
+			</batch:tasklet>
+		</batch:step>
+
+		<batch:listeners>
+			<batch:listener ref="batchAuditEventEmitter" />
+			<batch:listener ref="batchLifeCycleListener" />
+		</batch:listeners>
+	</batch:job>
+</beans>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:batch="http://www.springframework.org/schema/batch"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-2.1.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+
+
+	<bean id="http-sftp-tgt-resource"
+		class="com.mcg.batch.adapters.impl.support.vfs.VFSResource">
+		<property name="fileName">
+			<bean class="com.mcg.batch.adapters.impl.support.vfs.GenericFileName">
+				<constructor-arg name="scheme" value="sftp" />
+				<constructor-arg name="hostName" value="10.60.25.251" />
+				<constructor-arg name="port" value="22" />
+				<constructor-arg name="userName" value="wmadmin" />
+				<constructor-arg name="path" value="/home/wmadmin/sftp/incoming" />
+			</bean>
+		</property>
+		<property name="parameters">
+			<map>
+				<entry key="ssh.host.key.file" value="c:\\tmp\\id_rsa" />
+			</map>
+		</property>
+	</bean>
+</beans>
