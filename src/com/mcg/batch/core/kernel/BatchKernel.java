@@ -31,12 +31,12 @@ import com.mcg.batch.exceptions.KernelException;
  * @author Nanda Gopalan
  * 
  */
-public class SmartBatchKernel {
+public class BatchKernel {
 	/**
 	 * Logger to be used by this class
 	 */
 	private static Logger LOGGER = LoggerFactory
-			.getLogger(SmartBatchKernel.class);
+			.getLogger(BatchKernel.class);
 
 	// private static final ConcurrentHashMap<String, BatchController>
 	// CONTROLLER_PER_NAMESPACE = new ConcurrentHashMap<String,
@@ -51,7 +51,7 @@ public class SmartBatchKernel {
 	/**
 	 * prevent external instantiation
 	 */
-	private SmartBatchKernel() {
+	private BatchKernel() {
 
 		init();
 	}
@@ -62,7 +62,7 @@ public class SmartBatchKernel {
 	private void init() {
 
 		if (LOGGER.isTraceEnabled()) {
-			LOGGER.trace("SmartBatchKernel.init() started ");
+			LOGGER.trace("BatchKernel.init() started ");
 		}
 
 		Method[] methods = BatchController.class.getDeclaredMethods();
@@ -115,7 +115,7 @@ public class SmartBatchKernel {
 			e.printStackTrace();
 		}
 
-		LOGGER.info("SmartBatchKernel.init() completed");
+		LOGGER.info("BatchKernel.init() completed");
 
 	}
 
